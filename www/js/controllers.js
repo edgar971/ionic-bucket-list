@@ -1,5 +1,11 @@
 //home controller
-angular.module('starter.controllers', []).controller('HomeCtrl', ['$scope', function($scope) {
- 
+angular.module('myApp.controllers', ['firebase']).controller('AuthCtrl', ['$scope', 'Authentication', function($scope, Authentication) {
+ 	$scope.loginForm = {},
+ 	$scope.signIn = function() {
+	 	Authentication.login($scope.loginForm);
+	 	
+ 	}
 
-}]);
+}]).controller('UserHomeCtrl', ['$scope', 'Authentication', function($scope, Authentication) {
+
+}])

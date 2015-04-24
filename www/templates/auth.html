@@ -1,0 +1,20 @@
+<ion-view title="Login">
+    <ion-content >
+    	<form name="authForm" novalidate>
+    	<ul class="list">
+	    	<li class="item item-input">	
+	    		<span class="input-label">Username:</span>
+				<input type="email" name="username" ng-model="loginForm.username" ng-required="true">
+	    	</li>
+	    	<li class="item item-input">	
+	    		<span class="input-label">Password:</span>
+				<input type="password" name="password" ng-model="loginForm.password" ng-required="true">
+	    	</li>
+	    	<li class="item">	
+				<button class="button button-block button-positive activated" type="submit" ng-click="signIn()" ng-disabled="authForm.$invalid">Sign In</button>
+	    	</li>
+    	</ul>
+    	</form>
+    	
+    </ion-content>
+</ion-view>
