@@ -1,8 +1,8 @@
 //home controller
-angular.module('myApp.services', ['firebase']).factory('Authentication', ['$firebaseAuth', 'FIREBASE_URL', '$state', function($firebaseAuth, FIREBASE_URL, $state) {
+angular.module('myApp.services', ['firebase']).factory('Authentication', ['$firebaseAuth', 'FIREBASE_URL', '$state', '$rootScope', function($firebaseAuth, FIREBASE_URL, $state, $rootScope) {
 	var firebaseRef = new Firebase(FIREBASE_URL);
 	var authRefObj = $firebaseAuth(firebaseRef);
-	return {
+	var that =  {
 		login: function(user) {
 			authRefObj.$authWithPassword({
 				email: user.username,
@@ -14,6 +14,11 @@ angular.module('myApp.services', ['firebase']).factory('Authentication', ['$fire
 				//error stuff
 				console.error("Authentication failed:", error);
 			});
+		},
+		isLoggedIn: function() {
+			return authRefObj.$getAuth() != null; 
 		}
 	}
+	
+	return that;
 }]);

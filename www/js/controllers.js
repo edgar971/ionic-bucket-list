@@ -6,6 +6,10 @@ angular.module('myApp.controllers', ['firebase']).controller('AuthCtrl', ['$scop
 	 	
  	}
 
-}]).controller('UserHomeCtrl', ['$scope', 'Authentication', function($scope, Authentication) {
-
+}]).controller('UserHomeCtrl', ['$scope', '$rootScope', 'Authentication', '$state', function($scope, $rootScope, Authentication, $state) {
+	if(Authentication.isLoggedIn()) {
+		
+	} else {
+		$state.go('auth');
+	}
 }])
