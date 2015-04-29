@@ -15,6 +15,11 @@ angular.module('myApp.services', ['firebase']).factory('Authentication', ['$fire
 				console.error("Authentication failed:", error);
 			});
 		},
+		logout: function() {
+			authRefObj.$unauth();
+			$state.go('auth');
+			
+		},
 		isLoggedIn: function() {
 			return authRefObj.$getAuth() != null; 
 		}
