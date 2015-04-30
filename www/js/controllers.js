@@ -6,12 +6,20 @@ angular.module('myApp.controllers', ['firebase']).controller('AuthCtrl', ['$scop
 	 	$scope.Form = {},
 	 	$scope.registerToggle = false,
 	 	$scope.signIn = function() {
-		 	var data = Authentication.login($scope.Form);
-		 	console.log(data);
+		 	Authentication.login($scope.Form).then(function(authData){
+			 	console.log(authData);
+			 	if(authData) {
+				 	$state.go('home');
+				}
+			 	
+		 	})
+		 	
 		 	
 	 	},
 	 	$scope.register = function() {
-		 	Authentication.registerUser($scope.Form);
+		 	Authentication.registerUser($scope.Form).then(function(authData){
+			 	console.log(authData);
+		 	});
 	 	}
 
  	}

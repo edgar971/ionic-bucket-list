@@ -1,5 +1,5 @@
 //home controller
-angular.module('myApp.services', ['firebase']).factory('Authentication', ['$firebaseAuth', '$firebaseArray', 'FIREBASE_URL', '$state', '$rootScope', function($firebaseAuth, $firebaseArray, FIREBASE_URL, $state, $rootScope) {
+angular.module('myApp.services', ['firebase']).factory('Authentication', ['$firebaseAuth', '$firebaseObject', 'FIREBASE_URL', '$state', '$rootScope', function($firebaseAuth, $firebaseObject, FIREBASE_URL, $state, $rootScope) {
 	var firebaseRef = new Firebase(FIREBASE_URL);
 	var authRefObj = $firebaseAuth(firebaseRef);
 	var publicObj =  {
@@ -39,13 +39,13 @@ angular.module('myApp.services', ['firebase']).factory('Authentication', ['$fire
 				password: user.password
 			};
 			
-			authRefObj.$createUser(userInfo).then(function(data){
+			return authRefObj.$createUser(userInfo).then(function(data){
 				console.log('Registered user');
-				return publicObj.login(user).then(function(data){
+				publicObj.login(user).then(function(data){
 					console.log(data);
 					console.log('Logged In');
 					var userFireRef = new Firebase(FIREBASE_URL + "/users/" + data.uid),
-						userObjArray = $firebaseArray(userFireRef),
+						userObjArray = $firebaseObject(userFireRef),
 						userData = {
 							date: Firebase.ServerValue.TIMESTAMP,
 							userID: data.uid,
@@ -53,11 +53,8 @@ angular.module('myApp.services', ['firebase']).factory('Authentication', ['$fire
 							lastName: user.lname,
 							email: user.email
 						};
-					
-					userObjArray.$add(userData).then(function(data){
-						console.log("added user data", data);
-					});
-					
+						
+						userFireRef.set(userData);					
 				}).catch(function(error){
 					console.error("Authentication failed:", error);
 				});
