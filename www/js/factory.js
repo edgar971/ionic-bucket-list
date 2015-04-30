@@ -32,7 +32,7 @@ angular.module('myApp.services', ['firebase']).factory('Authentication', ['$fire
 		
 		registerUser: function(user) {
 			
-			console.log(user);
+			//console.log(user);
 			
 			var userInfo = {
 				email: user.email,
@@ -40,10 +40,10 @@ angular.module('myApp.services', ['firebase']).factory('Authentication', ['$fire
 			};
 			
 			return authRefObj.$createUser(userInfo).then(function(data){
-				console.log('Registered user');
+				//console.log('Registered user');
 				publicObj.login(user).then(function(data){
-					console.log(data);
-					console.log('Logged In');
+					//console.log(data);
+					//console.log('Logged In');
 					var userFireRef = new Firebase(FIREBASE_URL + "/users/" + data.uid),
 						userObjArray = $firebaseObject(userFireRef),
 						userData = {
@@ -54,7 +54,8 @@ angular.module('myApp.services', ['firebase']).factory('Authentication', ['$fire
 							email: user.email
 						};
 						
-						userFireRef.set(userData);					
+						userFireRef.set(userData);	
+						$state.go('home');				
 				}).catch(function(error){
 					console.error("Authentication failed:", error);
 				});
