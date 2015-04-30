@@ -1,29 +1,77 @@
 //home controller
-angular.module('myApp.services', ['firebase']).factory('Authentication', ['$firebaseAuth', 'FIREBASE_URL', '$state', '$rootScope', function($firebaseAuth, FIREBASE_URL, $state, $rootScope) {
+angular.module('myApp.services', ['firebase']).factory('Authentication', ['$firebaseAuth', '$firebaseArray', 'FIREBASE_URL', '$state', '$rootScope', function($firebaseAuth, $firebaseArray, FIREBASE_URL, $state, $rootScope) {
 	var firebaseRef = new Firebase(FIREBASE_URL);
 	var authRefObj = $firebaseAuth(firebaseRef);
-	var that =  {
-		login: function(user) {
-			authRefObj.$authWithPassword({
-				email: user.username,
-				password: user.password
-			}).then(function(data){
-				
-				$state.go('home');
-			}).catch(function(error) {
-				//error stuff
-				console.error("Authentication failed:", error);
-			});
-		},
+	var publicObj =  {
+		
 		logout: function() {
+			
 			authRefObj.$unauth();
+			
 			$state.go('auth');
 			
 		},
+		
 		isLoggedIn: function() {
+			
 			return authRefObj.$getAuth() != null; 
+		},
+		
+		login: function(user) {
+			
+			return authRefObj.$authWithPassword({
+				email: user.email,
+				password: user.password
+			}).catch(function(error) {
+				
+				//error stuff here by showing alart or something cool
+				console.error("Authentication failed:", error);
+				
+			});
+		},
+		
+		registerUser: function(user) {
+			
+			console.log(user);
+			
+			var userInfo = {
+				email: user.email,
+				password: user.password
+			};
+			
+			authRefObj.$createUser(userInfo).then(function(data){
+				console.log('Registered user');
+				return publicObj.login(user).then(function(data){
+					console.log(data);
+					console.log('Logged In');
+					var userFireRef = new Firebase(FIREBASE_URL + "/users/" + data.uid),
+						userObjArray = $firebaseArray(userFireRef),
+						userData = {
+							date: Firebase.ServerValue.TIMESTAMP,
+							userID: data.uid,
+							firstName: user.fname,
+							lastName: user.lname,
+							email: user.email
+						};
+					
+					userObjArray.$add(userData).then(function(data){
+						console.log("added user data", data);
+					});
+					
+				}).catch(function(error){
+					console.error("Authentication failed:", error);
+				});
+				
+				
+			}).catch(function(error) {
+				
+				//error stuff here by showing alart or something cool
+				console.error("Authentication failed:", error);
+				
+			});
+			
 		}
 	}
 	
-	return that;
+	return publicObj;
 }]);

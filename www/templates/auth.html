@@ -2,16 +2,40 @@
     <ion-content >
     	<form name="authForm" novalidate>
     	<ul class="list">
+	    	<li class="item item-input" ng-show="registerToggle">
+	    		<span class="input-label">	
+	    			First Name
+	    		</span>	
+		    	<input type="text" name="fname" ng-model="Form.fname" ng-required="registerToggle">
+	    	</li>
+	    	<li class="item item-input" ng-show="registerToggle">
+	    		<span class="input-label">	
+	    			Last Name
+	    		</span>	
+		    	<input type="text" name="lname" ng-model="Form.lname" ng-required="registerToggle">
+	    	</li>
 	    	<li class="item item-input">	
-	    		<span class="input-label">Username:</span>
-				<input type="email" name="username" ng-model="loginForm.username" ng-required="true">
+	    		<span class="input-label">Email:</span>
+				<input type="email" name="email" ng-model="Form.email" ng-required="true">
 	    	</li>
 	    	<li class="item item-input">	
 	    		<span class="input-label">Password:</span>
-				<input type="password" name="password" ng-model="loginForm.password" ng-required="true">
+				<input type="password" name="password" ng-model="Form.password" ng-required="true">
 	    	</li>
-	    	<li class="item">	
+	    	<li class="item item-toggle">	
+	    		Register
+	    		<label class="toggle toggle-positive">
+		    		<input type="checkbox" ng-model="registerToggle">
+		    		<div class="track">
+			         	<div class="handle"></div>
+			       	</div>
+	    		</label>
+	    	</li>
+	    	<li class="item" ng-hide="registerToggle">	
 				<button class="button button-block button-positive activated" type="submit" ng-click="signIn()" ng-disabled="authForm.$invalid">Sign In</button>
+	    	</li>
+	    	<li class="item" ng-show="registerToggle">	
+				<button class="button button-block button-positive activated" type="submit" ng-click="register()" ng-disabled="authForm.$invalid">Register</button>
 	    	</li>
     	</ul>
     	</form>

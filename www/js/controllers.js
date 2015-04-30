@@ -3,11 +3,17 @@ angular.module('myApp.controllers', ['firebase']).controller('AuthCtrl', ['$scop
  	if(Authentication.isLoggedIn()) {
 	 	$state.go('home');
  	} else {
-	 	$scope.loginForm = {},
+	 	$scope.Form = {},
+	 	$scope.registerToggle = false,
 	 	$scope.signIn = function() {
-		 	Authentication.login($scope.loginForm);
+		 	var data = Authentication.login($scope.Form);
+		 	console.log(data);
 		 	
+	 	},
+	 	$scope.register = function() {
+		 	Authentication.registerUser($scope.Form);
 	 	}
+
  	}
 
 }]).controller('UserHomeCtrl', ['$scope', '$rootScope', 'Authentication', '$state', function($scope, $rootScope, Authentication, $state) {
@@ -17,6 +23,7 @@ angular.module('myApp.controllers', ['firebase']).controller('AuthCtrl', ['$scop
 		$state.go('auth');
 	}
 }]).controller('NavBarCtrl', ['$scope', 'Authentication', function($scope, Authentication){
+	//watch this to update on event listener
 	$scope.loggedin = Authentication.isLoggedIn(),
 	$scope.logout = function() {
 		Authentication.logout();
