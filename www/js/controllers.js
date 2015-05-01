@@ -7,19 +7,33 @@ angular.module('myApp.controllers', ['firebase']).controller('AuthCtrl', ['$scop
 	 	$scope.registerToggle = false,
 	 	$scope.signIn = function() {
 		 	Authentication.login($scope.Form).then(function(authData){
-			 	console.log(authData);
-			 	if(authData) {
-				 	$state.go('home');
-				}
-			 	
+			 	$state.go('home');
 		 	})
 		 	
 		 	
 	 	},
 	 	$scope.register = function() {
-		 	Authentication.registerUser($scope.Form).then(function(authData){
-			 	console.log(authData);
-		 	});
+		 	Authentication.registerUser($scope.Form)
+		 		.then(function(data){
+					//console.log('Registered user');
+					Authentication.login($scope.Form).then(function(data){
+						console.log(data);
+						console.log('Logged In');
+						userData = {
+								date: Firebase.ServerValue.TIMESTAMP,
+								userID: data.uid,
+								firstName: $scope.Form.fname,
+								lastName: $scope.Form.lname,
+								email: $scope.Form.email
+						};
+						Authentication.addNewUserData(userData);
+						$state.go('home');
+					}).catch(function(error){
+						console.error("Authentication failed:", error);
+					});
+				
+				
+				});
 	 	}
 
  	}

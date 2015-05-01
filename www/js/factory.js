@@ -34,33 +34,10 @@ angular.module('myApp.services', ['firebase']).factory('Authentication', ['$fire
 			
 			//console.log(user);
 			
-			var userInfo = {
+ 			
+			return authRefObj.$createUser({
 				email: user.email,
 				password: user.password
-			};
-			
-			return authRefObj.$createUser(userInfo).then(function(data){
-				//console.log('Registered user');
-				publicObj.login(user).then(function(data){
-					//console.log(data);
-					//console.log('Logged In');
-					var userFireRef = new Firebase(FIREBASE_URL + "/users/" + data.uid),
-						userObjArray = $firebaseObject(userFireRef),
-						userData = {
-							date: Firebase.ServerValue.TIMESTAMP,
-							userID: data.uid,
-							firstName: user.fname,
-							lastName: user.lname,
-							email: user.email
-						};
-						
-						userFireRef.set(userData);	
-						$state.go('home');				
-				}).catch(function(error){
-					console.error("Authentication failed:", error);
-				});
-				
-				
 			}).catch(function(error) {
 				
 				//error stuff here by showing alart or something cool
@@ -68,7 +45,18 @@ angular.module('myApp.services', ['firebase']).factory('Authentication', ['$fire
 				
 			});
 			
-		}
+		}, 
+		addNewUserData: function(userData) {
+			console.log(userData);
+			var userFireRef = new Firebase(FIREBASE_URL + "/users/" + userData.userID),
+				userObjArray = $firebaseObject(userFireRef);
+				
+			return userFireRef.set(userData);
+				
+								
+				
+				
+ 		}
 	}
 	
 	return publicObj;
