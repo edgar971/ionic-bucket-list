@@ -58,12 +58,35 @@ angular.module('myApp.controllers', ['firebase']).controller('AuthCtrl', ['$scop
 	$scope.logout = function() {
 		FireAPI.logout();
 	}
-}]).controller('AddWishCtrl', ['$scope', '$state', 'FireAPI', function($scope, $state, FireAPI) {
+}]).controller('AddWishCtrl', ['$scope', '$state', 'FireAPI', 'Camera', function($scope, $state, FireAPI, Camera) {
 	$scope.wish = {};
 	$scope.takeMeHomeBro = function() {
 		$state.go('home');
 	}
-	$scope.addWish = function(wish) {
+	$scope.getPhoto = function() {
+    	console.log('Getting camera');
+	    Camera.getPicture().then(function(imageURI) {
+	      console.log(imageURI);
+	      $scope.wish.photo = imageURI;
+	    }, function(err) {
+	      console.err(err);
+	    }, {
+	      quality: 95,
+	      targetWidth: 800,
+	      targetHeight: 800,
+	      saveToPhotoAlbum: false
+	    });
+	    /*
+	    navigator.camera.getPicture(function(imageURI) {
+	      console.log(imageURI);
+	    }, function(err) {
+	    }, { 
+	      quality: 50,
+	      destinationType: Camera.DestinationType.DATA_URL
+	    });
+	    */
+  	}
+  	$scope.addWish = function(wish) {
 		
 		FireAPI.addUserWish(wish).then(function(){
 			$scope.wish = {};

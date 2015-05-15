@@ -4,6 +4,10 @@
         Back
       </button>
     </ion-nav-buttons>
+	<ion-nav-buttons side="secondary">
+      <button class="button ion-android-camera button-assertive" ng-click="getPhoto()">
+      </button>
+    </ion-nav-buttons>
     <ion-content>
 		<form name="addAWishForm" ng-submit="addWish(wish)" novalidate>
 	    	<ul class="list list-inset">
@@ -13,12 +17,16 @@
 		    		</span>	
 			    	<input type="text" name="wish" ng-model="wish.name" ng-required="true">
 		    	</li>
-		    	<li>	
+		    	<li class="item" ng-show="lastPhoto">
+		    		<img ng-src="{{wish.photo}}" style="width: 100%">	
+		    	</li>
+ 		    	<li>	
 				<li class="item range range-positive">
 				    <i class="icon ion-ios-sunny-outline"></i>
 				    <input type="range" name="desire" ng-model="wish.desire" ng-required="true" min="0" max="100" value="50">
 				    <i class="icon ion-ios-sunny"></i>
 				</li>
+				
 		    	<li class="item">	
 					<button class="button button-block button-positive activated" type="submit"   ng-disabled="addAWishForm.$invalid">Add Wish</button>
 		    	</li>
