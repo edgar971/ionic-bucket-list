@@ -29,6 +29,10 @@ angular.module('myApp', ['ionic', 'myApp.controllers', 'myApp.services'])
 		url: '/home/:uID',
 		templateUrl: 'templates/home.html',
 		controller: 'UserHomeCtrl'
+	}).state('addAWish', {
+		url: '/addwish/',
+		templateUrl: 'templates/addwish.html',
+		controller: 'AddWishCtrl'
 	});
 	
 	$urlRouterProvider.otherwise('/auth');

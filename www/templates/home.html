@@ -1,84 +1,20 @@
 
 <ion-view title="Bucket List">
+	<ion-nav-buttons side="secondary">
+      <button class="button" ng-click="loadAddWish()">
+       	Add Wish
+      </button>
+    </ion-nav-buttons>    
     <ion-content>
-<div class="card">
-  <div class="item item-divider">
-    I'm a Header in a Card!
-  </div>
-  <div class="item item-text-wrap">
-    This is a basic Card with some text.
-  </div>
-  <div class="item item-divider">
-    I'm a Footer in a Card!
-  </div>
-</div>    
-<div class="card">
-  <div class="item item-divider">
-    I'm a Header in a Card!
-  </div>
-  <div class="item item-text-wrap">
-    This is a basic Card with some text.
-  </div>
-  <div class="item item-divider">
-    I'm a Footer in a Card!
-  </div>
-</div>    
-<div class="card">
-  <div class="item item-divider">
-    I'm a Header in a Card!
-  </div>
-  <div class="item item-text-wrap">
-    This is a basic Card with some text.
-  </div>
-  <div class="item item-divider">
-    I'm a Footer in a Card!
-  </div>
-</div>    
-<div class="card">
-  <div class="item item-divider">
-    I'm a Header in a Card!
-  </div>
-  <div class="item item-text-wrap">
-    This is a basic Card with some text.
-  </div>
-  <div class="item item-divider">
-    I'm a Footer in a Card!
-  </div>
-</div>    
-<div class="card">
-  <div class="item item-divider">
-    I'm a Header in a Card!
-  </div>
-  <div class="item item-text-wrap">
-    This is a basic Card with some text.
-  </div>
-  <div class="item item-divider">
-    I'm a Footer in a Card!
-  </div>
-</div>    
-<div class="card">
-  <div class="item item-divider">
-    I'm a Header in a Card!
-  </div>
-  <div class="item item-text-wrap">
-    This is a basic Card with some text.
-  </div>
-  <div class="item item-divider">
-    I'm a Footer in a Card!
-  </div>
-</div>    
-<div class="card">
-  <div class="item item-divider">
-    I'm a Header in a Card!
-  </div>
-  <div class="item item-text-wrap">
-    This is a basic Card with some text.
-  </div>
-  <div class="item item-divider">
-    I'm a Footer in a Card!
-  </div>
-</div>    
-
+		<div class="card" ng-repeat="wish in allWishes">
+		  <header  class="item item-divider">
+		    {{wish.name}}
+		  </header>
+		  <section class="item item-text-wrap">
+		    This is a basic Card with some text.
+		  </section>
+		</div>    
+		
 
 	</ion-content>
 </ion-view>

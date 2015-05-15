@@ -1,0 +1,28 @@
+<ion-view title="Add Wish">
+	<ion-nav-buttons side="primary">
+      <button class="button" ng-click="takeMeHomeBro()">
+        Back
+      </button>
+    </ion-nav-buttons>
+    <ion-content>
+		<form name="addAWishForm" ng-submit="addWish(wish)" novalidate>
+	    	<ul class="list list-inset">
+		    	<li class="item item-input">
+		    		<span class="input-label">	
+		    			Enter Wish
+		    		</span>	
+			    	<input type="text" name="wish" ng-model="wish.name" ng-required="true">
+		    	</li>
+		    	<li>	
+				<li class="item range range-positive">
+				    <i class="icon ion-ios-sunny-outline"></i>
+				    <input type="range" name="desire" ng-model="wish.desire" ng-required="true" min="0" max="100" value="50">
+				    <i class="icon ion-ios-sunny"></i>
+				</li>
+		    	<li class="item">	
+					<button class="button button-block button-positive activated" type="submit"   ng-disabled="addAWishForm.$invalid">Add Wish</button>
+		    	</li>
+	    	</ul>
+    	</form>
+    </ion-content>
+</ion-view>

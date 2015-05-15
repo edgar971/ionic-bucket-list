@@ -1,22 +1,26 @@
 //home controller
-angular.module('myApp.controllers', ['firebase']).controller('AuthCtrl', ['$scope', 'Authentication', '$state', function($scope, Authentication, $state) {
- 	if(Authentication.isLoggedIn()) {
+angular.module('myApp.controllers', ['firebase']).controller('AuthCtrl', ['$scope', 'FireAPI', '$state', function($scope, FireAPI, $state) {
+ 	if(FireAPI.isLoggedIn()) {
 	 	$state.go('home');
  	} else {
 	 	$scope.Form = {},
 	 	$scope.registerToggle = false,
 	 	$scope.signIn = function() {
-		 	Authentication.login($scope.Form).then(function(authData){
-			 	$state.go('home');
+		 	FireAPI.login($scope.Form).then(function(data){
+				$state.go('home');	
+		 	}).catch(function(error){
+			 	console.log(error);
 		 	})
+		 	
+		 	
 		 	
 		 	
 	 	},
 	 	$scope.register = function() {
-		 	Authentication.registerUser($scope.Form)
+		 	FireAPI.registerUser($scope.Form)
 		 		.then(function(data){
 					//console.log('Registered user');
-					Authentication.login($scope.Form).then(function(data){
+					FireAPI.login($scope.Form).then(function(data){
 						console.log(data);
 						console.log('Logged In');
 						userData = {
@@ -26,10 +30,10 @@ angular.module('myApp.controllers', ['firebase']).controller('AuthCtrl', ['$scop
 								lastName: $scope.Form.lname,
 								email: $scope.Form.email
 						};
-						Authentication.addNewUserData(userData);
+						FireAPI.addNewUserData(userData);
 						$state.go('home');
 					}).catch(function(error){
-						console.error("Authentication failed:", error);
+						console.error("FireAPI failed:", error);
 					});
 				
 				
@@ -38,16 +42,33 @@ angular.module('myApp.controllers', ['firebase']).controller('AuthCtrl', ['$scop
 
  	}
 
-}]).controller('UserHomeCtrl', ['$scope', '$rootScope', 'Authentication', '$state', function($scope, $rootScope, Authentication, $state) {
-	if(Authentication.isLoggedIn()) {
+}]).controller('UserHomeCtrl', ['$scope', '$rootScope', 'FireAPI', '$state', function($scope, $rootScope, FireAPI, $state) {
+	if(FireAPI.isLoggedIn()) {
+		$scope.allWishes = FireAPI.loadWishes();
 		
+		$scope.loadAddWish = function() {
+			$state.go('addAWish');
+		}
 	} else {
 		$state.go('auth');
 	}
-}]).controller('NavBarCtrl', ['$scope', 'Authentication', function($scope, Authentication){
+}]).controller('NavBarCtrl', ['$scope', 'FireAPI', function($scope, FireAPI){
 	//watch this to update on event listener
-	$scope.loggedin = Authentication.isLoggedIn(),
+	$scope.loggedin = FireAPI.isLoggedIn(),
 	$scope.logout = function() {
-		Authentication.logout();
+		FireAPI.logout();
+	}
+}]).controller('AddWishCtrl', ['$scope', '$state', 'FireAPI', function($scope, $state, FireAPI) {
+	$scope.wish = {};
+	$scope.takeMeHomeBro = function() {
+		$state.go('home');
+	}
+	$scope.addWish = function(wish) {
+		
+		FireAPI.addUserWish(wish).then(function(){
+			$scope.wish = {};
+		}).catch(function(error){
+			console.log(error);
+		});
 	}
 }]);

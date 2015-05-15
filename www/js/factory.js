@@ -1,5 +1,5 @@
 //home controller
-angular.module('myApp.services', ['firebase']).factory('Authentication', ['$firebaseAuth', '$firebaseObject', 'FIREBASE_URL', '$state', '$rootScope', function($firebaseAuth, $firebaseObject, FIREBASE_URL, $state, $rootScope) {
+angular.module('myApp.services', ['firebase']).factory('FireAPI', ['$firebaseAuth', '$firebaseObject', '$firebaseArray', 'FIREBASE_URL', '$state', '$rootScope', function($firebaseAuth, $firebaseObject, $firebaseArray, FIREBASE_URL, $state, $rootScope) {
 	var firebaseRef = new Firebase(FIREBASE_URL);
 	var authRefObj = $firebaseAuth(firebaseRef);
 	var publicObj =  {
@@ -16,17 +16,11 @@ angular.module('myApp.services', ['firebase']).factory('Authentication', ['$fire
 			
 			return authRefObj.$getAuth() != null; 
 		},
-		
 		login: function(user) {
 			
 			return authRefObj.$authWithPassword({
 				email: user.email,
 				password: user.password
-			}).catch(function(error) {
-				
-				//error stuff here by showing alart or something cool
-				console.error("Authentication failed:", error);
-				
 			});
 		},
 		
@@ -47,7 +41,7 @@ angular.module('myApp.services', ['firebase']).factory('Authentication', ['$fire
 			
 		}, 
 		addNewUserData: function(userData) {
-			console.log(userData);
+			
 			var userFireRef = new Firebase(FIREBASE_URL + "/users/" + userData.userID),
 				userObjArray = $firebaseObject(userFireRef);
 				
@@ -56,6 +50,25 @@ angular.module('myApp.services', ['firebase']).factory('Authentication', ['$fire
 								
 				
 				
+ 		},
+ 		addUserWish: function(wish) {
+	 		//needs data validation
+	 		var userData = this.isLoggedIn,
+	 			userFireRef = new Firebase(FIREBASE_URL + "/users/" + userData.uid + "/wishes/"),
+	 			userWishes = $firebaseArray(userFireRef),
+	 			wishObj = {
+		 			name: wish.name,
+		 			desire: wish.desire
+	 			};
+	 			
+	 			return userWishes.$add(wishObj);
+	 		
+ 		},
+ 		loadWishes: function() {
+	 		var userData = this.isLoggedIn,
+	 			userFireRef = new Firebase(FIREBASE_URL + "/users/" + userData.uid + "/wishes/");
+	 			
+	 		return $firebaseArray(userFireRef);
  		}
 	}
 	
