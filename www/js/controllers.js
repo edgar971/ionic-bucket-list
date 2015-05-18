@@ -45,7 +45,7 @@ angular.module('myApp.controllers', ['firebase']).controller('AuthCtrl', ['$scop
 }]).controller('UserHomeCtrl', ['$scope', '$rootScope', 'FireAPI', '$state', function($scope, $rootScope, FireAPI, $state) {
 	if(FireAPI.isLoggedIn()) {
 		$scope.allWishes = FireAPI.loadWishes();
-		
+		console.log($scope.allWishes);
 		$scope.loadAddWish = function() {
 			$state.go('addAWish');
 		}
@@ -58,32 +58,29 @@ angular.module('myApp.controllers', ['firebase']).controller('AuthCtrl', ['$scop
 	$scope.logout = function() {
 		FireAPI.logout();
 	}
-}]).controller('AddWishCtrl', ['$scope', '$state', 'FireAPI', 'Camera', function($scope, $state, FireAPI, Camera) {
+}]).controller('AddWishCtrl', ['$scope', '$state', 'FireAPI', 'Camera', function($scope, $state, FireAPI,$cordovaCamera) {
 	$scope.wish = {};
 	$scope.wish.photo = null;
 	$scope.takeMeHomeBro = function() {
 		$state.go('home');
 	}
 	$scope.getPhoto = function() {
+		//create a factory for this camera service 
     	console.log('Getting camera');
-	    Camera.getPicture().then(function(imageURI) {
-		  console.log(imageURI);
-		  var fileReader = new FileReader();
-		  fileReader.onload = function(file) {
-			  
-		  }
-		  //fileReader.readAsDataURL(imageURI)
+    	var imageSettings = {
+	    	destinationType : Camera.DestinationType.DATA_URL,
+			quality: 40,
+			targetWidth: 400,
+			targetHeight: 400,
+			saveToPhotoAlbum: false,
 	      
-	      $scope.wish.photo = "data:image/jpeg;base64," + imageURI || null;
-	      
+	    }
+	    console.log(imageSettings);
+	    $cordovaCamera.getPicture(imageSettings).then(function(imageURI) {
+	      $scope.wish.photo = 'data:image/jpeg;base64,' + imageURI || null;
+	      console.log($scope.wish.photo);
 	    }, function(err) {
 	      console.err(err);
-	    }, {
-	      quality: 50,
-	      targetWidth: 800,
-	      targetHeight: 800,
-	      saveToPhotoAlbum: false,
-	      destinationType: Camera.DestinationType.DATA_URL
 	    });
 	    /*
 	    navigator.camera.getPicture(function(imageURI) {

@@ -6,14 +6,26 @@
       </button>
     </ion-nav-buttons>    
     <ion-content>
-		<div class="card" ng-repeat="wish in allWishes">
-		  <header  class="item item-divider">
-		    {{wish.name}}
-		  </header>
-		  <section class="item item-text-wrap">
-		    This is a basic Card with some text.
-		  </section>
-		</div>    
+    	<ion-list>
+    		<ion-item class="card" ng-repeat="wish in allWishes">
+
+					  <div class="item item-avatar">
+					     <img src="http://placehold.it/350x150&text=Image%20Needed" alt="Change Me" />
+					    <h2>{{wish.name}}</h2>
+					    <p>{{wish.desire}}</p>
+					  </div>
+					
+					  <div class="item item-image" ng-show="wish.photo">
+					     <img ng-src="{{wish.photo}}" alt="Change Me" />
+					  </div>
+					
+					  <a class="item item-icon-left assertive" href="#">
+					    <i class="icon ion-music-note"></i>
+					    Start listening
+					  </a>
+
+    		</ion-item>
+    	</ion-list>
 		
 
 	</ion-content>
