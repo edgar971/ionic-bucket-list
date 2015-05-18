@@ -53,23 +53,37 @@ angular.module('myApp.services', ['firebase']).factory('FireAPI', ['$firebaseAut
  		},
  		addUserWish: function(wish) {
 	 		//needs data validation
-	 		var userData = this.isLoggedIn,
+	 		var userData = authRefObj.$getAuth(),
 	 			userFireRef = new Firebase(FIREBASE_URL + "/users/" + userData.uid + "/wishes/"),
 	 			userWishes = $firebaseArray(userFireRef),
+	 			fileReader = new FileReader(),
+	 			wishObj = {},
+	 			imageData = null;
+	 			if(wish.photo != null) {
+		 			console.log("has image", fileReader);
+		 			fileReader.onload = (function(file){
+			 			return function(e) {
+				 			var fileData = e.target.result;
+				 			console.log(fileData);
+			 			}
+		 			})();
+		 			fileReader.readAsDataURL(wish.photo);
+	 			}
 	 			wishObj = {
 		 			name: wish.name,
+		 			photo: imageData,
 		 			desire: wish.desire
 	 			};
-	 			
 	 			return userWishes.$add(wishObj);
 	 		
  		},
  		loadWishes: function() {
-	 		var userData = this.isLoggedIn,
+	 		var userData = authRefObj.$getAuth(),
 	 			userFireRef = new Firebase(FIREBASE_URL + "/users/" + userData.uid + "/wishes/");
 	 			
 	 		return $firebaseArray(userFireRef);
- 		}
+ 		},
+ 		
 	}
 	
 	return publicObj;
