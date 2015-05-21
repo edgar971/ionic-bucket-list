@@ -60,7 +60,8 @@ angular.module('myApp.services', ['firebase']).factory('FireAPI', ['$firebaseAut
  	 			wishObj = {
 		 			name: wish.name,
 		 			photo: wish.photo,
-		 			desire: wish.desire
+		 			desire: wish.desire,
+		 			created: Firebase.ServerValue.TIMESTAMP
 	 			};
 	 			console.log(wish.photo);
 	 			return userWishes.$add(wishObj);
